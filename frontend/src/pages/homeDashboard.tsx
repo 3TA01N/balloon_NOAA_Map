@@ -297,9 +297,9 @@ function HomeDashboard() {
     useEffect(() => {
     async function loadUGCData() {
         const [coastalRes, publicRes, offshoreRes] = await Promise.all([
-        fetch('/UGC_COASTAL.json'),
-        fetch('/UGC_PUBLIC_ZONE.json'),
-        fetch('/UGC_OFFSHORE.json'),
+            fetch("https://noaa-shapefile-json.s3.amazonaws.com/UGC_COASTAL.json"),
+            fetch("https://noaa-shapefile-json.s3.amazonaws.com/UGC_PUBLIC_ZONE.json"),
+            fetch("https://noaa-shapefile-json.s3.amazonaws.com/UGC_OFFSHORE.json"),
         ]);
 
         const [rawUGCCoastal, rawUGCPublic, rawUGCOffshore] = await Promise.all([
