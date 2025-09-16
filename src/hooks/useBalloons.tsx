@@ -13,7 +13,7 @@ export function useBalloons() {
     setLoading(true);
     let isMounted = true;
     try {
-      const res = await axios.get("http://localhost:3000/api/balloons", {
+      const res = await axios.get("/api/balloons", {
         signal: controller?.signal,
       });
       const filterBalloons = res.data

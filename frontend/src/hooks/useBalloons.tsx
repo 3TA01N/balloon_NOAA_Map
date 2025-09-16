@@ -10,7 +10,7 @@ export function useBalloons(showTrajectory = false, hoursPast = 0) {
   const fetchData = useCallback(async (controller?: AbortController) => {
     setLoading(true);
     try {
-      const res = await axios.get(`http://localhost:3000/api/balloons?hoursPast=${showTrajectory ? hoursPast : 0}`, {
+      const res = await axios.get(`/api/balloons?hoursPast=${showTrajectory ? hoursPast : 0}`, {
         signal: controller?.signal,
       });
       const flattened: { id: number; latitude: number; longitude: number; altitude: number }[][] = [];

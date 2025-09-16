@@ -31,7 +31,7 @@ export function useStorms(preFilters?: {
                 if (filters.severity?.length) params.severity = filters.severity.join(",");
                 if (filters.certainty?.length) params.certainty = filters.certainty.join(",");
             }
-            const res = await axios.get("http://localhost:3000/api/storms", {
+            const res = await axios.get("/api/storms", {
                 params,
                 signal: controller?.signal,
         });
