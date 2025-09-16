@@ -498,7 +498,7 @@ function HomeDashboard() {
             <Box sx={{ display: "flex", alignItems: "center", ml: 4 }}>
             <CircularProgress size = {20} sx={{ mr: 1}} />
             <Typography variant="body2" sx = {{ display : "flex", alignItems: "center"}}>
-                Loading weather polygons…
+                Loading weather polygons(may take a few minutes to load all, especially coastal ones)…
             </Typography>
             </Box>
         )}
