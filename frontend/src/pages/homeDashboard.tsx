@@ -29,6 +29,7 @@ import {
   ListItemText,
   MenuItem,
   AccordionDetails,
+  CircularProgress,
   IconButton
 } from "@mui/material"
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
@@ -293,28 +294,43 @@ function HomeDashboard() {
     
 
     const [UGC_LOOKUP, setUGC_LOOKUP] = useState<UGCJson>({});
-
+    const [loadingUGCLookup, setLoadingUGC] = useState(true);
     useEffect(() => {
     async function loadUGCData() {
-        const [coastalRes, publicRes, offshoreRes] = await Promise.all([
-            fetch("https://noaa-shapefile-json.s3.amazonaws.com/UGC_COASTAL.json"),
-            fetch("https://noaa-shapefile-json.s3.amazonaws.com/UGC_PUBLIC_ZONE.json"),
-            fetch("https://noaa-shapefile-json.s3.amazonaws.com/UGC_OFFSHORE.json"),
-        ]);
+        setLoadingUGC(true)
+        try {
+            const [coastalRes, publicRes, offshoreRes] = await Promise.all([
+                fetch("https://noaa-shapefile-json.s3.amazonaws.com/UGC_COASTAL.json"),
+                fetch("https://noaa-shapefile-json.s3.amazonaws.com/UGC_PUBLIC_ZONE.json"),
+                fetch("https://noaa-shapefile-json.s3.amazonaws.com/UGC_OFFSHORE.json"),
+            ]);
 
-        const [rawUGCCoastal, rawUGCPublic, rawUGCOffshore] = await Promise.all([
-        coastalRes.json(),
-        publicRes.json(),
-        offshoreRes.json(),
-        ]);
+            const [rawUGCCoastal, rawUGCPublic, rawUGCOffshore] = await Promise.all([
+            coastalRes.json(),
+            publicRes.json(),
+            offshoreRes.json(),
+            ]);
+            console.log("Coastal response status:", coastalRes.status);
+            console.log("Public response status:", publicRes.status);
+            console.log("Offshore response status:", offshoreRes.status);
 
-        const merged: UGCJson = {
-        ...rawUGCCoastal,
-        ...rawUGCPublic,
-        ...rawUGCOffshore,
-        };
+            console.log("JSON successfully parsed!");
+            console.log("Coastal sample:", rawUGCCoastal[0]);
 
-        setUGC_LOOKUP(merged);
+            const merged: UGCJson = {
+            ...rawUGCCoastal,
+            ...rawUGCPublic,
+            ...rawUGCOffshore,
+            };
+
+            setUGC_LOOKUP(merged);
+        }
+        catch (error) {
+            console.error("Failed to fetch UGC json", error)
+        }
+        finally {
+            setLoadingUGC(false)
+        }
     }
 
     loadUGCData();
@@ -475,7 +491,17 @@ function HomeDashboard() {
             >
           <InfoIcon sx={{ mr: 1 }} />
           <Typography variant="body1">Info</Typography>
+          
+          
         </Box>
+        {loadingUGCLookup && (
+            <Box sx={{ display: "flex", alignItems: "center", ml: 4 }}>
+            <CircularProgress size = {20} sx={{ mr: 1}} />
+            <Typography variant="body2" sx = {{ display : "flex", alignItems: "center"}}>
+                Loading weather polygons…
+            </Typography>
+            </Box>
+        )}
 
 
         </Box>
